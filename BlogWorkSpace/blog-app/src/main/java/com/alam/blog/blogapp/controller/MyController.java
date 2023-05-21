@@ -1,0 +1,138 @@
+package com.alam.blog.blogapp.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alam.blog.blogapp.dto.CategoryDto;
+import com.alam.blog.blogapp.dto.PostDto;
+import com.alam.blog.blogapp.dto.UserDto;
+import com.alam.blog.blogapp.response.ResponseDemo;
+import com.alam.blog.blogapp.service.CategoryService;
+import com.alam.blog.blogapp.service.PostService;
+import com.alam.blog.blogapp.service.UserService;
+
+@RestController
+public class MyController {
+
+	@Autowired
+	PostService postService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	CategoryService categoryService;
+
+	@GetMapping("/welcome")
+	public String welcome() {
+		return "Good Morning Sarfaraz Alam";
+	}
+	// This apis is for User Controller
+	@PostMapping("/saveUser")
+	public UserDto saveUser(@RequestBody UserDto userDto) {
+
+		UserDto userDtoResult = userService.saveUser(userDto);
+		return userDtoResult;
+	}
+
+	@GetMapping("/getUserById/{id}")
+	public UserDto getUserById(@PathVariable("id") Long userId) {
+
+		UserDto userDto = userService.getUserById(userId);
+
+		return userDto;
+
+	}
+
+	@GetMapping("/deleteUser/{id}")
+	public String deleteUser(@PathVariable("id") Long userId) {
+
+		String userdeletedmessage = userService.deleteUser(userId);
+
+		return userdeletedmessage;
+
+	}
+
+	// This apis is for Category
+	@PostMapping("/saveCategory")
+	public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
+
+		CategoryDto categoryDtoRes = categoryService.saveCategory(categoryDto);
+		return categoryDtoRes;
+	}
+
+	@GetMapping("/getCategoryById/{id}")
+	public CategoryDto getCategoryById(@PathVariable("id") Long categoryId) {
+
+		CategoryDto categoryDto = categoryService.fetchCategoryById(categoryId);
+
+		return categoryDto;
+
+	}
+	
+	@GetMapping("/deleteCategory/{id}")
+	public String deleteCategory(@PathVariable("id") Long categoryId) {
+
+		String categoryDeletedMessage = categoryService.deleteCategory(categoryId);
+
+		return categoryDeletedMessage;
+
+	}
+
+
+	
+	
+	// This apis is for Post
+	@PostMapping("/savePost/user/{userId}/category/{categoryId}")
+	public PostDto savePost(@RequestBody PostDto postDto, @PathVariable Long userId, @PathVariable Long categoryId) {
+
+		PostDto postDtoRes = postService.savePost(postDto, userId, categoryId);
+		return postDtoRes;
+	}
+
+	@GetMapping("/getPostById/{id}")
+	public PostDto getPostById(@PathVariable("id") Long postId) {
+
+		PostDto postDto = postService.getPostById(postId);
+
+		return postDto;
+
+	}
+
+	@GetMapping("/deletePost/{id}")
+	public String deletePost(@PathVariable("id") Long postId) {
+
+		String postDeletedMessage = postService.deletePost(postId);
+
+		return postDeletedMessage;
+
+	}
+
+//	@GetMapping("/findAllPost")
+//	public List<PostDto> findAllPost() {
+//
+//		List<PostDto> postDto = postService.findAllPost();
+//
+//		return postDto;
+//
+//	}
+	@GetMapping("/findAllPost")
+	public List<ResponseDemo> findAllPost() {
+
+		List<ResponseDemo> RpostDto = postService.findAllPost();
+
+		return RpostDto;
+
+	}
+	
+	@GetMapping("/findAllUser/{pageNumber}/{pageSize}")
+	public List<UserDto> findAllUser(@PathVariable int pageNumber, @PathVariable int pageSize){
+		return userService.findAllUser(pageNumber, pageSize);
+	}
+	
+	
+}
