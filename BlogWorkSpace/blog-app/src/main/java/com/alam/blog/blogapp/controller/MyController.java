@@ -29,7 +29,7 @@ public class MyController {
 
 	@GetMapping("/welcome")
 	public String welcome() {
-		return "Good Morning Sarfaraz Alam";
+		return "Good Morning Sarfaraz Alam How Are you";
 	}
 	// This apis is for User Controller
 	@PostMapping("/saveUser")
